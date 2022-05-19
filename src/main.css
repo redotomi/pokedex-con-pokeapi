@@ -1,0 +1,129 @@
+*, *::after, *::before {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  box-sizing: border-box;
+
+}
+
+html {
+  text-align: center;
+  background-color: #121212;
+}
+html::-webkit-scrollbar{
+    width: 2vh;
+}
+
+html::-webkit-scrollbar-thumb{
+  background-color: rgb(240, 46, 70);
+}
+
+html::-webkit-scrollbar-track{
+    background-color: #121212;
+}
+
+.pokemon-tarjetas {
+  margin: 0vh 5vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: .7rem;
+}
+
+.tarjeta {
+  border: 2px solid rgb(80, 80, 80);
+  background-color: #313131;
+  padding: .25rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tarjeta:hover {
+  background-color: #444444;
+  box-shadow:
+  rgba(240, 46, 70, 0.5) 5px 5px;
+}
+
+
+.oculto {
+  display: none;
+}
+
+
+.anterior, .siguiente {
+  font-size: larger;
+  font-weight: bold;
+  border: 2px solid rgb(80, 80, 80);
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: inherit;
+  margin: 10px 7px;
+}
+
+.anterior:hover, .siguiente:hover {
+  background-color: #444444;
+}
+
+.logo-pokedex {
+  width: 490px;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 400ms ease-in-out;
+  border: 1px solid rgb(80, 80, 80);
+  border-radius: 10px;
+  z-index: 10;
+  background-color: #424242;
+  width: 700px;
+  height: 500px;
+  max-width: 80%;
+}
+
+.popup.activo {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup-header {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(80, 80, 80);
+}
+
+.popup-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.popup-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.popup-body {
+  padding: 10px 15px;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 200ms ease-in-out;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+#overlay.activo {
+  opacity: 1;
+  pointer-events: all;
+}
