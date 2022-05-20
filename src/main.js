@@ -1,6 +1,7 @@
-let URL = 'https://pokeapi.co/api/v2/pokemon/';
+const URL = 'https://pokeapi.co/api/v2/pokemon/';
 let siguienteURL;
 let anteriorURL;
+let contadorPokemon = 0;
 
 async function traerPokemons(url) {
   const pokemons = await fetch(url);
@@ -9,24 +10,31 @@ async function traerPokemons(url) {
 
 async function llenarCartas(cartas) {
   const dataPokemons = await cartas;
-  console.log(dataPokemons);
   const pokemons = dataPokemons.results;
 
+
+  if(contadorPokemon <= 20){
   pokemons.forEach(pokemon => {
-    const $carta = document.querySelector('.tarjeta-body');
-    const $img = document.querySelector('.pokemon-sprite');
-    $carta.textContent = `${pokemon.name.capitalize()}`;
-    $carta.setAttribute('url', `${pokemon.url}`);
+    const $header = document.createElement('div');
+    const $body = document.createElement('div')
+    const $img = document.createElement('img');
+    $img.className = 'pokemon-sprite';
+    
+    $body.textContent = `${pokemon.name.capitalize()}`;
     
     fetch(pokemon.url)
-      .then(respeusta => respeusta.json())
+      .then(respuesta => respuesta.json())
       .then(respuestaJSON => respuestaJSON.sprites)
       .then(sprites => {
         $img.src = sprites.front_default});
         
-    $img.classList.remove('pokemon-sprite')
-    $carta.classList.remove('tarjeta-body');
-  });
+    $header.appendChild($img);
+    crearTarjeta($header, $body);
+    contadorPokemon++;
+  })}
+  else{ 
+    return;
+  }
 
   siguienteURL = dataPokemons.next;
   anteriorURL = dataPokemons.previous;
@@ -46,20 +54,21 @@ async function llenarCartas(cartas) {
   
 }
 
-function borrarNombrePokemons() {
-  const $cartas = document.querySelectorAll('.texto');
-  $cartas.forEach((elemento => {
-    elemento.classList.add('tarjeta-body');
-    elemento.textContent = '';
-  }))
+function crearTarjeta(header, body) {
+  const $contenedor = document.querySelector('.pokemon-tarjetas');
+  const $tarjeta = document.createElement('div');
+  $tarjeta.className = 'tarjeta';
+  header.className = 'tarjeta-header';
+  body.className = 'tarjeta-body';
+  $tarjeta.appendChild(header);
+  $tarjeta.appendChild(body);
+  $contenedor.appendChild($tarjeta);
 }
 
-function borrarImagenesPokemons() {
-  const $cartas = document.querySelectorAll('.imagen');
-  $cartas.forEach((elemento) => {
-    elemento.classList.add('pokemon-sprite');
-    elemento.src = '';
-  })
+function borrarTarjetas() {
+  const $tarjetas = document.querySelector('.pokemon-tarjetas');
+  $tarjetas.innerHTML = '';
+  contadorPokemon = 0;
 }
 
 async function actualizarCartas(url) {
@@ -71,8 +80,9 @@ llenarCartas(traerPokemons(URL));
 document.querySelector('.siguiente').onclick = () => {
 
   if (siguienteURL){
-  borrarNombrePokemons();
-  borrarImagenesPokemons();
+  // borrarNombrePokemons();
+  // borrarImagenesPokemons();
+  borrarTarjetas()
   actualizarCartas(siguienteURL); 
   }
 }
@@ -80,8 +90,9 @@ document.querySelector('.siguiente').onclick = () => {
 document.querySelector('.anterior').onclick = () => {
 
   if(anteriorURL) {
-    borrarNombrePokemons()
-    borrarImagenesPokemons();
+    // borrarNombrePokemons()
+    // borrarImagenesPokemons();
+    borrarTarjetas()
   }
   actualizarCartas(anteriorURL);
 }
