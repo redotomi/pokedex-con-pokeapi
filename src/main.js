@@ -1,7 +1,6 @@
 const URL = 'https://pokeapi.co/api/v2/pokemon/';
 let siguienteURL;
 let anteriorURL;
-let contadorPokemon = 0;
 
 async function traerPokemons(url) {
   const pokemons = await fetch(url);
@@ -11,9 +10,7 @@ async function traerPokemons(url) {
 async function llenarCartas(cartas) {
   const dataPokemons = await cartas;
   const pokemons = dataPokemons.results;
-
-
-  if(contadorPokemon <= 20){
+  
   pokemons.forEach(pokemon => {
     const $header = document.createElement('div');
     const $body = document.createElement('div')
@@ -29,12 +26,9 @@ async function llenarCartas(cartas) {
         $img.src = sprites.front_default});
         
     $header.appendChild($img);
-    crearTarjeta($header, $body);
-    contadorPokemon++;
-  })}
-  else{ 
-    return;
-  }
+    crearTarjeta($header, $body, pokemon.name);
+    añadirInteraccion();
+  });
 
   siguienteURL = dataPokemons.next;
   anteriorURL = dataPokemons.previous;
@@ -54,12 +48,16 @@ async function llenarCartas(cartas) {
   
 }
 
-function crearTarjeta(header, body) {
+function crearTarjeta(header, body, pokemon) {
   const $contenedor = document.querySelector('.pokemon-tarjetas');
   const $tarjeta = document.createElement('div');
   $tarjeta.className = 'tarjeta';
+  $tarjeta.dataset.nombrePokemon = pokemon;
+
   header.className = 'tarjeta-header';
   body.className = 'tarjeta-body';
+
+
   $tarjeta.appendChild(header);
   $tarjeta.appendChild(body);
   $contenedor.appendChild($tarjeta);
@@ -80,8 +78,6 @@ llenarCartas(traerPokemons(URL));
 document.querySelector('.siguiente').onclick = () => {
 
   if (siguienteURL){
-  // borrarNombrePokemons();
-  // borrarImagenesPokemons();
   borrarTarjetas()
   actualizarCartas(siguienteURL); 
   }
@@ -90,12 +86,11 @@ document.querySelector('.siguiente').onclick = () => {
 document.querySelector('.anterior').onclick = () => {
 
   if(anteriorURL) {
-    // borrarNombrePokemons()
-    // borrarImagenesPokemons();
     borrarTarjetas()
   }
   actualizarCartas(anteriorURL);
 }
+
 
 
 Object.defineProperty(String.prototype, 'capitalize', {
@@ -105,41 +100,53 @@ Object.defineProperty(String.prototype, 'capitalize', {
   enumerable: false
 });
 
-const $abrirPopup = document.querySelectorAll('.tarjeta');
-const $cerrarPopup = document.querySelectorAll('.close-button');
-const $overlay = document.querySelector('#overlay');
-const popup = document.querySelector('#popup')
+function añadirInteraccion() {
+  const $abrirPopup = document.querySelectorAll('.tarjeta');
+  const $cerrarPopup = document.querySelector('.close-button');
+  const $overlay = document.querySelector('#overlay');
+  const popup = document.querySelector('#popup')
 
-$abrirPopup.forEach(tarjeta => {
-    tarjeta.addEventListener('click', (e) => {
-        abrirPopup(popup);
-        console.log(e.target);
-    })
-})
+  $abrirPopup.forEach((tarjeta) =>{
+    tarjeta.onclick = (e) => {
+      const dataPokemon = e.target.closest('[data-nombre-pokemon]');
+      abrirPopup(popup);
+      rellenarInfoPopup(dataPokemon.getAttribute('data-nombre-pokemon'));
+    }
+  })
 
-$cerrarPopup.forEach(button => {
-    button.addEventListener('click', () => {
-        cerrarPopup(popup);
-    })
-})
+  $cerrarPopup.onclick = () => {
+    cerrarPopup(popup);
+  }
+ 
+  $overlay.addEventListener('click',() => {
+    const popup = document.querySelector('#popup.activo');
+    cerrarPopup(popup);
+  })
 
-$overlay.addEventListener('click',() => {
-    const popup = document.querySelectorAll('#popup.activo');
-    popup.forEach(popup => {
-        cerrarPopup(popup);
-    })
-})
-
-function abrirPopup(popup) {
+  function abrirPopup(popup) {
     if (popup === null) return;
     popup.classList.add('activo');
     $overlay.classList.add('activo'); 
-}
+  }
 
-function cerrarPopup(popup) {
+  function cerrarPopup(popup) {
     if (popup === null) return;
     popup.classList.remove('activo');
     $overlay.classList.remove('activo'); 
+  }
 }
 
+async function rellenarInfoPopup(nombrePokemon) {
+  const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`);
+  const infoPokemon = await pokemon.json();
+
+  const $tituloPopup = document.querySelector('.popup-header .title');
+  const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon')
+
+  $tituloPopup.textContent = `${infoPokemon.name.capitalize()}`;
+  $spritePokemon.src = `${infoPokemon.sprites.front_default}`;
+  console.log(infoPokemon);
+  console.log(infoPokemon.name, infoPokemon.height, infoPokemon.types[0].type.name);
+
+}
 
