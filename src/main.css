@@ -2,7 +2,7 @@
   font-family: 'Open Sans', sans-serif;
   color: white;
   box-sizing: border-box;
-
+  
 }
 
 html {
@@ -130,6 +130,6 @@ html::-webkit-scrollbar-track{
 
 @media (max-width: 500px) {
   .logo-pokedex {
-    width: 100vw;
+    width: 90vw;
   }
 }
