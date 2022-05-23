@@ -73,7 +73,7 @@ async function actualizarCartas(url) {
   llenarCartas(traerPokemons(url));
 }
 
-llenarCartas(traerPokemons(URL));
+actualizarCartas(URL);
 
 document.querySelector('.siguiente').onclick = () => {
 
@@ -89,6 +89,11 @@ document.querySelector('.anterior').onclick = () => {
     borrarTarjetas()
   }
   actualizarCartas(anteriorURL);
+}
+
+document.querySelector('.logo-pokedex').onclick = () => {
+  borrarTarjetas()
+  actualizarCartas(URL);
 }
 
 
