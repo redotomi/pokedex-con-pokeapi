@@ -129,15 +129,21 @@ function añadirInteraccion() {
   })
 
   function abrirPopup(popup) {
+    const $body = document.querySelector('body');
     if (popup === null) return;
     popup.classList.add('activo');
     $overlay.classList.add('activo'); 
+
+    $body.style.overflow='hidden';
   }
 
   function cerrarPopup(popup) {
+    const $body = document.querySelector('body');
     if (popup === null) return;
     popup.classList.remove('activo');
     $overlay.classList.remove('activo'); 
+
+    $body.style.overflow='auto';
   }
 }
 
