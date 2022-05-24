@@ -78,7 +78,7 @@ html::-webkit-scrollbar-track{
   z-index: 10;
   background-color: #424242;
   width: 700px;
-  height: 500px;
+  height: 430px;
   max-width: 80%;
 }
 
@@ -112,20 +112,24 @@ html::-webkit-scrollbar-track{
   margin: 0px 50px;
   padding: 10px 15px;
   display: flex;
+  flex-wrap: wrap;
 }
+
 .datos-pokemon {
   display: flex;
   flex-direction: column;
   width: 320px;
   max-width: 80%;
+  height: fit-content;
 }
 
 .sprite-popup-pokemon {
+  display: block;
   margin: 10px;
   border: 3px solid rgb(102, 102, 102);
   border-radius: 8px;
-  width: 220px;
-  max-width: 70%;
+  width: 39%;
+  height: 54%;
 }
 
 .estatura, .peso {
@@ -135,6 +139,17 @@ html::-webkit-scrollbar-track{
   border: 3px solid rgb(102, 102, 102);
   border-radius: 8px;
 }
+
+.tipos-pokemon {
+  display: flex;
+  justify-content: space-around;
+  border: 3px solid rgb(102, 102, 102);
+  border-radius: 8px;
+  margin: 10px;
+  width: 100%;
+  height: 70px;
+}
+
 
 #overlay {
   position: fixed;
@@ -153,11 +168,52 @@ html::-webkit-scrollbar-track{
   pointer-events: all;
 }
 
-@media (max-width: 500px) {
-  .logo-pokedex {
-    width: 90vw;
+
+@media (max-width: 608px) {
+  .popup-body {
+    margin: 0;
+    flex-direction: column;
+    align-items: center;
+  }
+  .datos-pokemon {
+    width: 100%;
+    justify-content: space-around;
+    flex-direction: row;
+  }
+  .estatura, .peso {
+    width: 100%;
+  }
+  .popup {
+    height: 400px;
+  }
+  .tipos-pokemon {
+    height: 140px;
+  }
+  
+}
+
+@media (max-width: 861px) {
+  .popup-body {
+    margin: 0;
+    margin-right: 3%;
+    flex-direction: column;
+    align-items: center;
+  }
+  .popup {
+    height: 550px;
+  }
+  .datos-pokemon {
+    width: 100%;
+    justify-content: space-around;
+    flex-direction: row;
+  }
+  .estatura, .peso {
+    width: 100%;
   }
   .sprite-popup-pokemon {
-    width: 15vw;
+    width: 30vw;
+  }
+  .logo-pokedex {
+    width: 90vw;
   }
 }
