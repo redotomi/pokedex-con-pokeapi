@@ -121,11 +121,13 @@ function añadirInteraccion() {
 
   $cerrarPopup.onclick = () => {
     cerrarPopup(popup);
+    borrarTipos();
   }
  
   $overlay.addEventListener('click',() => {
     const popup = document.querySelector('#popup.activo');
     cerrarPopup(popup);
+    borrarTipos();
   })
 
   function abrirPopup(popup) {
@@ -145,6 +147,11 @@ function añadirInteraccion() {
 
     $body.style.overflow='auto';
   }
+
+  function borrarTipos() {
+    const $listaTipos = document.querySelector('.tipos-pokemon');
+    $listaTipos.innerHTML = '';
+  }
 }
 
 async function rellenarInfoPopup(nombrePokemon) {
@@ -152,10 +159,40 @@ async function rellenarInfoPopup(nombrePokemon) {
   const infoPokemon = await pokemon.json();
 
   const $tituloPopup = document.querySelector('.popup-header .title');
-  const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon')
+  const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon');
+  const $peso = document.querySelector('.popup-body .peso');
+  const $estatura = document.querySelector('.popup-body .estatura');
 
-  $tituloPopup.textContent = `${infoPokemon.name.capitalize()}`;
-  $spritePokemon.src = `${infoPokemon.sprites.front_default}`;
+  $tituloPopup.textContent = infoPokemon.name.capitalize();
+  $spritePokemon.src = infoPokemon.sprites.front_default;
+  $peso.textContent = infoPokemon.weight;
+  $estatura.textContent = infoPokemon.height;
+
+  if(infoPokemon.types.length > 1){
+    infoPokemon.types.forEach((e) => {
+      const $tipo = document.createElement('strong');      
+      const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
+
+      $tipo.classList.add('tipos');
+      $tipo.classList.add(`${e.type.name}`);
+      $tipo.textContent = e.type.name.capitalize();
+      $listaTipos.appendChild($tipo);
+
+      console.log(e.type.name);
+    }) 
+  }
+  else {
+    const $tipo = document.createElement('strong')
+    const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
+
+    $tipo.classList.add('tipos');
+    $tipo.classList.add(`${infoPokemon.types[0].type.name}`);
+    $tipo.textContent = infoPokemon.types[0].type.name.capitalize();
+    $listaTipos.appendChild($tipo);
+
+    console.log(infoPokemon.types[0].type.name);
+  }
+
   console.log(infoPokemon);
   console.log(infoPokemon.name, infoPokemon.height, infoPokemon.types[0].type.name);
 

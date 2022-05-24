@@ -154,6 +154,94 @@ html::-webkit-scrollbar-track{
   height: 70px;
 }
 
+.tipos {
+  text-shadow: 0px 2px 4px black;
+  padding: 2% 0;
+  border-radius: 30px;
+  width: 35%;
+}
+
+.normal {
+  background-color: #c2bab2;
+}
+
+.fire {
+  background-color: #D02701;
+}
+
+.water {
+  background-color: #1673CE;
+}
+
+.grass {
+  background-color: #5C952F;
+}
+
+.steel {
+  background-color: #908E9F;
+}
+
+.fighting {
+  background-color: #81321C;
+}
+
+.flying {
+  background-color: #96A8F5;
+}
+
+.poison {
+background-color: #8E458D;
+}
+
+.ground {
+background-color: #D7B76B;
+}
+
+.rock {
+background-color: #9D843C;
+}
+
+.bug {
+background-color: #87950C;
+}
+
+.ghost {
+background-color: #6061B4;
+}
+
+.electric {
+background-color: #F9B916;
+}
+
+.psychic {
+background-color: #E73C75;
+}
+
+.ice {
+background-color: #97E3FD;
+}
+
+.dragon {
+background-color: #6F5BD4;
+}
+
+.dark {
+background-color: #49392D;
+}
+
+.fairy {
+background-color: #E697E7;
+}
+
+.unkown {
+background-color: #c2bab200;
+border: 3px solid black;
+}
+
+.shadow {
+background-color: #000000;
+}
+
 
 #overlay {
   position: fixed;
