@@ -3,12 +3,18 @@ let siguienteURL;
 let anteriorURL;
 
 async function traerPokemons(url) {
-  const pokemons = await fetch(url);
-  return pokemons.json();
+  try {
+    const pokemons = await fetch(url);
+    return pokemons.json();;
+  } catch(error) {
+    throw new Error(error);
+  }
 }
 
+
 async function llenarCartas(cartas) {
-  const dataPokemons = await cartas;
+  try {
+    const dataPokemons = await cartas;
   const pokemons = dataPokemons.results;
   
   pokemons.forEach(pokemon => {
@@ -46,6 +52,10 @@ async function llenarCartas(cartas) {
     document.querySelector('.siguiente').classList.remove('oculto');
   }
   
+  }catch(error){
+    throw new Error(error);
+  }
+  
 }
 
 function crearTarjeta(header, body, pokemon) {
@@ -70,7 +80,12 @@ function borrarTarjetas() {
 }
 
 async function actualizarCartas(url) {
-  llenarCartas(traerPokemons(url));
+  try {
+    llenarCartas(traerPokemons(url));
+  } catch(error) {
+    throw new Error(error);
+  }
+  
 }
 
 actualizarCartas(URL);
@@ -95,8 +110,6 @@ document.querySelector('.logo-pokedex').onclick = () => {
   borrarTarjetas()
   actualizarCartas(URL);
 }
-
-
 
 Object.defineProperty(String.prototype, 'capitalize', {
   value: function() {
@@ -155,7 +168,8 @@ function añadirInteraccion() {
 }
 
 async function rellenarInfoPopup(nombrePokemon) {
-  const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`);
+  try {
+    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`);
   const infoPokemon = await pokemon.json();
 
   const $tituloPopup = document.querySelector('.popup-header .title');
@@ -177,8 +191,6 @@ async function rellenarInfoPopup(nombrePokemon) {
       $tipo.classList.add(`${e.type.name}`);
       $tipo.textContent = e.type.name.capitalize();
       $listaTipos.appendChild($tipo);
-
-      console.log(e.type.name);
     }) 
   }
   else {
@@ -190,12 +202,11 @@ async function rellenarInfoPopup(nombrePokemon) {
     $tipo.textContent = infoPokemon.types[0].type.name.capitalize();
     $listaTipos.appendChild($tipo);
 
-    console.log(infoPokemon.types[0].type.name);
   }
-
-  console.log(infoPokemon);
-  console.log(infoPokemon.name, infoPokemon.height, infoPokemon.types[0].type.name);
-
+  } catch(error){
+    throw new Error(error);
+  }
+  
 }
 
 function agregarComaAValores(num) {
