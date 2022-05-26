@@ -165,8 +165,8 @@ async function rellenarInfoPopup(nombrePokemon) {
 
   $tituloPopup.textContent = infoPokemon.name.capitalize();
   $spritePokemon.src = infoPokemon.sprites.front_default;
-  $peso.textContent = infoPokemon.weight;
-  $estatura.textContent = infoPokemon.height;
+  $peso.textContent = `${agregarComaAValores(infoPokemon.weight)} kg`;
+  $estatura.textContent = `${agregarComaAValores(infoPokemon.height)} m`;
 
   if(infoPokemon.types.length > 1){
     infoPokemon.types.forEach((e) => {
@@ -196,5 +196,11 @@ async function rellenarInfoPopup(nombrePokemon) {
   console.log(infoPokemon);
   console.log(infoPokemon.name, infoPokemon.height, infoPokemon.types[0].type.name);
 
+}
+
+function agregarComaAValores(num) {
+  var string = num.toString();
+  var resultado = string.slice(0, -1) +","+string.slice(-1);
+  return resultado;
 }
 
