@@ -199,8 +199,14 @@ async function rellenarInfoPopup(nombrePokemon) {
 }
 
 function agregarComaAValores(num) {
-  var string = num.toString();
-  var resultado = string.slice(0, -1) +","+string.slice(-1);
-  return resultado;
+  const string = num.toString();
+  if(string.length < 2) {
+    const resultado = `0${string.slice(0, -1)},${string.slice(-1)}`;
+    return resultado;
+  }
+  else {
+    const resultado = `${string.slice(0, -1)},${string.slice(-1)}`;
+    return resultado;
+  }
 }
 
