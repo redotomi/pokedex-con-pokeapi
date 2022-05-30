@@ -18,21 +18,10 @@ async function llenarCartas(cartas) {
   const pokemons = dataPokemons.results;
   
   pokemons.forEach(pokemon => {
-    const $header = document.createElement('div');
     const $body = document.createElement('div')
-    const $img = document.createElement('img');
-    $img.className = 'pokemon-sprite';
-    
     $body.textContent = `${pokemon.name.capitalize()}`;
     
-    fetch(pokemon.url)
-      .then(respuesta => respuesta.json())
-      .then(respuestaJSON => respuestaJSON.sprites)
-      .then(sprites => {
-        $img.src = sprites.front_default});
-        
-    $header.appendChild($img);
-    crearTarjeta($header, $body, pokemon.name);
+    crearTarjeta($body, pokemon.name);
     añadirInteraccion();
   });
 
@@ -58,17 +47,14 @@ async function llenarCartas(cartas) {
   
 }
 
-function crearTarjeta(header, body, pokemon) {
+function crearTarjeta(body, pokemon) {
   const $contenedor = document.querySelector('.pokemon-tarjetas');
   const $tarjeta = document.createElement('div');
   $tarjeta.className = 'tarjeta';
   $tarjeta.dataset.nombrePokemon = pokemon;
 
-  header.className = 'tarjeta-header';
   body.className = 'tarjeta-body';
 
-
-  $tarjeta.appendChild(header);
   $tarjeta.appendChild(body);
   $contenedor.appendChild($tarjeta);
 }
