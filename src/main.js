@@ -18,10 +18,10 @@ async function llenarCartas(cartas) {
 
     pokemons.forEach((pokemon) => {
       const $body = document.createElement('div');
-      $body.textContent = `${pokemon.name.capitalize()}`;
+      $body.textContent = agregarMayus(pokemon.name);
 
       crearTarjeta($body, pokemon.name);
-      añadirInteraccion();
+      agregarInteraccion();
     });
 
     siguienteURL = dataPokemons.next;
@@ -67,8 +67,6 @@ async function actualizarCartas(url) {
   }
 }
 
-actualizarCartas(URL);
-
 document.querySelector('.siguiente').onclick = () => {
   if (siguienteURL) {
     borrarTarjetas();
@@ -88,14 +86,13 @@ document.querySelector('.logo-pokedex').onclick = () => {
   actualizarCartas(URL);
 };
 
-Object.defineProperty(String.prototype, 'capitalize', {
-  value() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  },
-  enumerable: false,
-});
+function agregarMayus(palabra) {
+  return palabra.charAt(0).toUpperCase() + palabra.slice(1);
+}
 
-function añadirInteraccion() {
+
+
+function agregarInteraccion() {
   const $abrirPopup = document.querySelectorAll('.tarjeta');
   const $cerrarPopup = document.querySelector('.close-button');
   const $overlay = document.querySelector('#overlay');
@@ -154,7 +151,7 @@ async function rellenarInfoPopup(nombrePokemon) {
     const $peso = document.querySelector('.popup-body .peso');
     const $estatura = document.querySelector('.popup-body .estatura');
 
-    $tituloPopup.textContent = infoPokemon.name.capitalize();
+    $tituloPopup.textContent = agregarMayus(infoPokemon.name);
     $spritePokemon.src = infoPokemon.sprites.front_default;
     $peso.textContent = `${agregarComaAValores(infoPokemon.weight)} kg`;
     $estatura.textContent = `${agregarComaAValores(infoPokemon.height)} m`;
@@ -166,7 +163,7 @@ async function rellenarInfoPopup(nombrePokemon) {
 
         $tipo.classList.add('tipos');
         $tipo.classList.add(`${e.type.name}`);
-        $tipo.textContent = e.type.name.capitalize();
+        $tipo.textContent = agregarMayus(e.type.name);
         $listaTipos.appendChild($tipo);
       });
     } else {
@@ -175,7 +172,7 @@ async function rellenarInfoPopup(nombrePokemon) {
 
       $tipo.classList.add('tipos');
       $tipo.classList.add(`${infoPokemon.types[0].type.name}`);
-      $tipo.textContent = infoPokemon.types[0].type.name.capitalize();
+      $tipo.textContent = agregarMayus(infoPokemon.types[0].type.name);
       $listaTipos.appendChild($tipo);
     }
   } catch (error) {
@@ -193,3 +190,5 @@ function agregarComaAValores(num) {
   const resultado = `${string.slice(0, -1)},${string.slice(-1)}`;
   return resultado;
 }
+
+actualizarCartas(URL);
