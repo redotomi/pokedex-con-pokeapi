@@ -1,6 +1,4 @@
 const URL = 'https://pokeapi.co/api/v2/pokemon/';
-let siguienteURL;
-let anteriorURL;
 
 async function traerPokemons(url) {
   try {
@@ -24,19 +22,11 @@ async function llenarCartas(cartas) {
       agregarInteraccion();
     });
 
-    siguienteURL = dataPokemons.next;
-    anteriorURL = dataPokemons.previous;
+    const siguienteURL = dataPokemons.next;
+    const anteriorURL = dataPokemons.previous;
 
-    if (anteriorURL === null) {
-      document.querySelector('.anterior').classList.add('oculto');
-    } else {
-      document.querySelector('.anterior').classList.remove('oculto');
-    }
-    if (siguienteURL === null) {
-      document.querySelector('.siguiente').classList.add('oculto');
-    } else {
-      document.querySelector('.siguiente').classList.remove('oculto');
-    }
+    actualizarDisplayBotones(anteriorURL, siguienteURL);
+    cambiarPagina(siguienteURL, anteriorURL);
   } catch (error) {
     throw new Error(error);
   }
@@ -59,6 +49,19 @@ function borrarTarjetas() {
   $tarjetas.innerHTML = '';
 }
 
+function actualizarDisplayBotones(urlAnterior, urlSiguiente) {
+  if (urlAnterior === null) {
+    document.querySelector('.anterior').classList.add('oculto');
+  } else {
+    document.querySelector('.anterior').classList.remove('oculto');
+  }
+  if (urlSiguiente === null) {
+    document.querySelector('.siguiente').classList.add('oculto');
+  } else {
+    document.querySelector('.siguiente').classList.remove('oculto');
+  }
+}
+
 async function actualizarCartas(url) {
   try {
     llenarCartas(traerPokemons(url));
@@ -67,30 +70,30 @@ async function actualizarCartas(url) {
   }
 }
 
-document.querySelector('.siguiente').onclick = () => {
-  if (siguienteURL) {
-    borrarTarjetas();
-    actualizarCartas(siguienteURL);
-  }
-};
+function cambiarPagina(urlSiguiente, urlAnterior) {
+  document.querySelector('.siguiente').onclick = () => {
+    if (urlSiguiente) {
+      borrarTarjetas();
+      actualizarCartas(urlSiguiente);
+    }
+  };
 
-document.querySelector('.anterior').onclick = () => {
-  if (anteriorURL) {
-    borrarTarjetas();
-  }
-  actualizarCartas(anteriorURL);
-};
+  document.querySelector('.anterior').onclick = () => {
+    if (urlAnterior) {
+      borrarTarjetas();
+    }
+    actualizarCartas(urlAnterior);
+  };
 
-document.querySelector('.logo-pokedex').onclick = () => {
-  borrarTarjetas();
-  actualizarCartas(URL);
-};
+  document.querySelector('.logo-pokedex').onclick = () => {
+    borrarTarjetas();
+    actualizarCartas(URL);
+  };
+}
 
 function agregarMayus(palabra) {
   return palabra.charAt(0).toUpperCase() + palabra.slice(1);
 }
-
-
 
 function agregarInteraccion() {
   const $abrirPopup = document.querySelectorAll('.tarjeta');
