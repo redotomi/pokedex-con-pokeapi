@@ -1,7 +1,8 @@
+// eslint-disable-next-line
 import { agregarMayus } from './estilizadores.js';
-
+// eslint-disable-next-line
 import agregarInteraccion from './popup.js';
-
+// eslint-disable-next-line
 import { actualizarDisplayBotones, cambiarPagina } from './paginador.js';
 
 function crearTarjeta(body, pokemon) {
@@ -9,7 +10,7 @@ function crearTarjeta(body, pokemon) {
   const $tarjeta = document.createElement('div');
   $tarjeta.className = 'tarjeta';
   $tarjeta.dataset.nombrePokemon = pokemon;
-
+  // eslint-disable-next-line
   body.className = 'tarjeta-body';
 
   $tarjeta.appendChild(body);

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { actualizarCartas, URL } from '../index.js';
 
 export function borrarTarjetas() {

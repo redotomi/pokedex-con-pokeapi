@@ -1,8 +1,15 @@
+// eslint-disable-next-line
+import { cargarPokemons, guardarPokemons } from '../storage/storage.js';
+
+let pokemons;
+
 export default async function traerPokemons(url) {
   try {
-    const pokemons = await fetch(url);
-    return pokemons.json();
+    pokemons = cargarPokemons(url);
   } catch (error) {
-    throw new Error(error);
+    pokemons = await fetch(url);
+    pokemons = await pokemons.json();
+    guardarPokemons(url, pokemons);
   }
+  return pokemons;
 }
