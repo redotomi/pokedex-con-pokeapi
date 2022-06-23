@@ -3,74 +3,63 @@ import { cargarPokemon, guardarPokemon } from '../storage/storage.js';
 // eslint-disable-next-line
 import { agregarMayus, agregarComaAValores } from './estilizadores.js';
 
-async function rellenarInfoPopup(nombrePokemon) {
-  try {
-    const infoPokemon = cargarPokemon(nombrePokemon);
+function actualizarTituloPopup(texto) {
+  const $tituloPopup = document.querySelector('.popup-header .title');
+  $tituloPopup.textContent = agregarMayus(texto);
+}
 
-    const $tituloPopup = document.querySelector('.popup-header .title');
-    const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon');
-    const $peso = document.querySelector('.popup-body .peso');
-    const $estatura = document.querySelector('.popup-body .estatura');
+function actualizarSprite(sprite) {
+  const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon');
+  $spritePokemon.src = sprite;
+}
 
-    $tituloPopup.textContent = agregarMayus(infoPokemon.name);
-    $spritePokemon.src = infoPokemon.sprites.front_default;
-    $peso.textContent = `${agregarComaAValores(infoPokemon.weight)} kg`;
-    $estatura.textContent = `${agregarComaAValores(infoPokemon.height)} m`;
+function actualizarPesoPokemon(peso) {
+  const $peso = document.querySelector('.popup-body .peso');
+  $peso.textContent = `${agregarComaAValores(peso)} kg`;
+}
 
-    if (infoPokemon.types.length > 1) {
-      infoPokemon.types.forEach((e) => {
-        const $tipo = document.createElement('strong');
-        const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
+function actualizarEstaturaPokemon(estatura) {
+  const $estatura = document.querySelector('.popup-body .estatura');
+  $estatura.textContent = `${agregarComaAValores(estatura)} m`;
+}
 
-        $tipo.classList.add('tipos');
-        $tipo.classList.add(`${e.type.name}`);
-        $tipo.textContent = agregarMayus(e.type.name);
-        $listaTipos.appendChild($tipo);
-      });
-    } else {
+function actualizarTiposPokemon(tipos) {
+  if (tipos.length > 1) {
+    tipos.forEach((e) => {
       const $tipo = document.createElement('strong');
       const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
 
       $tipo.classList.add('tipos');
-      $tipo.classList.add(`${infoPokemon.types[0].type.name}`);
-      $tipo.textContent = agregarMayus(infoPokemon.types[0].type.name);
+      $tipo.classList.add(`${e.type.name}`);
+      $tipo.textContent = agregarMayus(e.type.name);
       $listaTipos.appendChild($tipo);
-    }
+    });
+  } else {
+    const $tipo = document.createElement('strong');
+    const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
+
+    $tipo.classList.add('tipos');
+    $tipo.classList.add(`${tipos[0].type.name}`);
+    $tipo.textContent = agregarMayus(tipos[0].type.name);
+    $listaTipos.appendChild($tipo);
+  }
+}
+
+async function rellenarInfoPopup(nombrePokemon) {
+  let infoPokemon;
+  try {
+    infoPokemon = cargarPokemon(nombrePokemon);
   } catch (error) {
     const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombrePokemon}`);
-    const infoPokemon = await pokemon.json();
+    infoPokemon = await pokemon.json();
     guardarPokemon(nombrePokemon, infoPokemon);
-
-    const $tituloPopup = document.querySelector('.popup-header .title');
-    const $spritePokemon = document.querySelector('.popup-body .sprite-popup-pokemon');
-    const $peso = document.querySelector('.popup-body .peso');
-    const $estatura = document.querySelector('.popup-body .estatura');
-
-    $tituloPopup.textContent = agregarMayus(infoPokemon.name);
-    $spritePokemon.src = infoPokemon.sprites.front_default;
-    $peso.textContent = `${agregarComaAValores(infoPokemon.weight)} kg`;
-    $estatura.textContent = `${agregarComaAValores(infoPokemon.height)} m`;
-
-    if (infoPokemon.types.length > 1) {
-      infoPokemon.types.forEach((e) => {
-        const $tipo = document.createElement('strong');
-        const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
-
-        $tipo.classList.add('tipos');
-        $tipo.classList.add(`${e.type.name}`);
-        $tipo.textContent = agregarMayus(e.type.name);
-        $listaTipos.appendChild($tipo);
-      });
-    } else {
-      const $tipo = document.createElement('strong');
-      const $listaTipos = document.querySelector('.popup-body .tipos-pokemon');
-
-      $tipo.classList.add('tipos');
-      $tipo.classList.add(`${infoPokemon.types[0].type.name}`);
-      $tipo.textContent = agregarMayus(infoPokemon.types[0].type.name);
-      $listaTipos.appendChild($tipo);
-    }
   }
+
+  actualizarTituloPopup(infoPokemon.name);
+  actualizarSprite(infoPokemon.sprites.front_default);
+  actualizarPesoPokemon(infoPokemon.weight);
+  actualizarEstaturaPokemon(infoPokemon.height);
+  actualizarTiposPokemon(infoPokemon.types);
 }
 
 export default function agregarInteraccion() {
