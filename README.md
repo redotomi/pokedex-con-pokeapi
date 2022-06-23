@@ -1,2 +1,12 @@
-# pokedex-con-pokeapi
-PokéDex usando la REST API PokéAPI
+# PokéDex
+
+## Esta PokéDex se desarrolló usando la REST API PokéAPI.
+
+El objetivo de esta PokéDex es el de poner en práctica el contenido aprendido sobre
+las RESTFul API's y cómo crear una aplicación en base a una.
+
+=================================
+
+La aplicación funciona mostrando páginas de hasta 20 elementos y con un diseño totalmente responsivo.
+Esta misma esta testeada end to end usando **Cypress**
+
